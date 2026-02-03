@@ -18,35 +18,37 @@ Pozwala przetestować wszystkie wymagane operacje zawarte w klasie `MinPriorityQ
 * **wstawianie elementów** z priorytetem,
 * **pobieranie minimum**,
 * **zmniejszanie priorytetu** wybranego elementu,
-* **budowanie kolejki** z gotowej listy (operacja `build_queue`),
+* **budowanie kolejki** z gotowej listy (operacja `build_queue` wykorzystująca **algorytm Floyda** o złożoności $O(n)$),
 * **podgląd aktualnego stanu kopca**.
 
 ---
 
 ### 2. Kompresja pliku
 
-* Program wyświetla listę dostępnych plików `.txt` w folderze projektu do sformatowani.
+* Program wyświetla listę dostępnych plików `.txt` w folderze projektu.
 * Domyślnie można użyć pliku `plik_do_testow.txt` (powstaje automatycznie przy uruchomieniu programu).
-* Użytkownik podaje nazwę pliku wyjściowego (np. `wynik.txt`).
+* Użytkownik podaje nazwę pliku wyjściowego (np. `wynik.bin`).
 
-**Plik wyjściowy jest sformatowany w sposób czytelny, umożliwiający dekompresję:**
+**Plik wyjściowy jest zapisywany binarnie (`.bin`), co zapewnia rzeczywistą oszczędność miejsca:**
 
-* **Każda linia to**: `Znak:Częstotliwość-Kod`.
-* **Obsługa spacji i enterów**: Znaki specjalne są zapisywane jako `<SP>` i `<NL>` dla bezpieczeństwa danych.
-* **Separator**: Stała linia `##############################` oddziela słownik od zakodowanej treści.
-* **Dane**: Strumień bitowy reprezentowany jako ciąg znaków '0' i '1'.
+* **Nagłówek (SŁOWNIK)**: Tekstowy zapis mapowania (np. `a: 5 - 101`) umożliwiający dekompresję.
+* **Obsługa spacji i enterów**: Znaki specjalne w słowniku są zapisywane jako `<SP>` i `<NL>`.
+* **Sekcja DANE**: Po separatorze `DANE:` następuje zapis binarny.
+* **Bit Packing**: Ciągi zer i jedynek są pakowane w 8-bitowe bajty (nie jako tekst).
+* **Padding**: Na końcu pliku zapisywana jest informacja `PADDING: X`, mówiąca ile bitów należy zignorować w ostatnim bajcie.
 
 **Podczas kompresji program:**
 
-* wyświetla tabelę znaków, ich częstotliwości i kodów Huffmana,
-* zapisuje słownik i dane binarne do pliku wynikowego.
+* generuje kody Huffmana na podstawie częstości znaków,
+* tworzy plik binarny zawierający niezbędny nagłówek oraz skompresowane dane.
 
 ---
 
 ### 3. Dekompresja pliku
 
-* Użytkownik podaje nazwę pliku skompresowanego (np. `wynik_kompresji.txt`).
+* Użytkownik podaje nazwę pliku skompresowanego (np. `wynik_kompresji.bin`).
 * Następnie nazwę pliku wynikowego (np. `odzyskany.txt`).
+* Program odczytuje nagłówek, odtwarza drzewo kodów i dekoduje bajty z powrotem na tekst.
 
 ---
 
@@ -56,8 +58,8 @@ Pozwala przetestować wszystkie wymagane operacje zawarte w klasie `MinPriorityQ
 Należy:
 
 1. Skompresować plik `plik_do_testow.txt`.
-2. Zdekompresować uzyskany plik `.txt`.
-3. Plik oryginalny i odzyskany  **powinny być identyczne**.
+2. Zdekompresować uzyskany plik `.bin`.
+3. Plik oryginalny i odzyskany **powinny być identyczne**.
 
 ### Test 2 – kolejka priorytetowa
 
@@ -65,15 +67,14 @@ Należy sprawdzić ręcznie w module demonstracyjnym:
 
 * czy `extract_min` zawsze zwraca element o najmniejszym priorytecie,
 * czy `decrease_priority` poprawnie reorganizuje kopiec,
-* czy `build_queue` tworzy poprawną strukturę (struktura jest twardo zakodowana, aby ułatwić testowanie).
+* czy `build_queue` tworzy poprawną strukturę (zgodnie z regułą rodzic <= dzieci).
 
 ---
 
 ## Funkcjonalności
 
 * **Własna implementacja**: Brak bibliotek typu `heapq`, cała logika kopca znajduje się w `priority_queue.py`.
-* **Kompresja plików**: Kodowanie tekstów do formatu zawierającego słownik + dane.
-* **Dekompresja plików**: Przywracanie danych do postaci oryginalnej.
+* **Kompresja binarna**: Rzeczywiste upychanie bitów (bit packing) do pliku `.bin`, a nie zapis ciągu "01" jako tekstu.
+* **Dekompresja plików**: Przywracanie danych binarnych do postaci oryginalnego tekstu.
 * **Wprowadzanie nazw plików**: Obsługa ścieżek przez użytkownika.
-
-* **Poprawna obsługa znaków**: Specjalne traktowanie spacji i znaków nowej linii.
+* **Poprawna obsługa znaków**: Specjalne traktowanie spacji i znaków nowej linii w nagłówku pliku.

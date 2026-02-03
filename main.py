@@ -91,14 +91,14 @@ def main():
             in_name = input(f"Podaj nazwę pliku (domyślnie '{test_file_name}'): ")
             if not in_name: in_name = test_file_name
             
-            out_name = input("Podaj nazwę pliku wynikowego (np. wynik_kompresji.txt): ")
-            if not out_name: out_name = "wynik_kompresji.txt"
+            out_name = input("Podaj nazwę pliku wynikowego (np. wynik_kompresji.bin): ")
+            if not out_name: out_name = "wynik_kompresji.bin"
 
             # Łączenie folderu bazowego z nazwą pliku
             huffman.compress(get_full_path(in_name), get_full_path(out_name))
 
         elif choice == '3':
-            in_name = input("Podaj nazwę pliku do dekompresji (np. wynik_kompresji.txt): ")
+            in_name = input("Podaj nazwę pliku do dekompresji (np. wynik_kompresji.bin): ")
             out_name = input("Podaj nazwę pliku odzyskanego (np. wynik_dekompresji.txt): ")
     
             if in_name and out_name:
