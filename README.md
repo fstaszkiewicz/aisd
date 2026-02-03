@@ -37,6 +37,8 @@ Pozwala przetestować wszystkie wymagane operacje zawarte w klasie `MinPriorityQ
 * **Bit Packing**: Ciągi zer i jedynek są pakowane w 8-bitowe bajty (nie jako tekst).
 * **Padding**: Na końcu pliku zapisywana jest informacja `PADDING: X`, mówiąca ile bitów należy zignorować w ostatnim bajcie.
 
+![Podgląd działania programu](screen.png)
+
 **Podczas kompresji program:**
 
 * generuje kody Huffmana na podstawie częstości znaków,
